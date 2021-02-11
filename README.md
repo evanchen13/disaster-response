@@ -50,9 +50,17 @@ Finally, run the Flask file to view the web app at http://0.0.0.0:3001/
 $ python run.py
 ```
 
+# ETL Pipeline
+
+The ETL pipeline first loads the data from disaster_messages.csv and disaster_categories.csv and merges them on the common ID. All of the category data is located in one column, with 0, 1, or 2 for each category separated by `;`, with 0 meaning that the message does not fall into that category and 1 or 2 meaning that it does. The ETL pipeline therefore splits the categories into their own columns and extracts the numbers, replacing 2 with 1. Finally, the pipeline removes duplicates and saves the cleaned dataset to a SQLite database.
+
+# ML Pipeline
+
+The ML pipeline first loads the cleaned data from the SQLite database and splits the data in X and Y arrays. Next, it builds the model using Pipeline from scikit-learn. The scikit-learn Pipeline first contains a FeatureUnion of TfidfVectorizer and a custom WordCounter transformer that counts the number of words in each message. This FeatureUnion fits and transforms using the training data. After that, the scikit-learn Pipeline contains MultiOutputClassifier using RandomForestClassifier as an estimator to transform and predict using the test data. Additionally, when building the model, the ML pipeline uses GridSearchCV to find the optimal values for the `n_estimators` and `criterion` parameters in RandomForestClassifier using f1-weighted scoring. After generating the predicted values, the pipeline generates the classification report that contains the precision, recall, and f1-score. Finally, the pipeline exports the model as a pickle file.
+
 # Acknowledgements
 
-Special thanks to Figure Eight for providing the data and the [Udacity Data Scientist Nanodegree](https://www.udacity.com/course/data-scientist-nanodegree--nd025) for providing ETL pipeline, ML pipeline, and web app templates.
+Special thanks to Figure Eight for providing the data and the [Udacity Data Scientist Nanodegree](https://www.udacity.com/course/data-scientist-nanodegree--nd025) for providing the ETL pipeline, ML pipeline, and web app templates.
 
 # License
 
