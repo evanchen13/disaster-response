@@ -39,10 +39,13 @@ def load_data(database_filepath):
 
 def tokenize(text):
     
-    """Splits the text into tokens.
+    """Splits the text into tokens, and then lemmatizes and stems the tokens.
     
     Args:
         text (string): text to split into tokens
+
+    Returns:
+        tokens (list): list of tokens after stemming and lemmatization
     """
     
     # use regex to find detect URLs and replace them with placeholders that represent URLs
@@ -74,7 +77,7 @@ def tokenize(text):
 
 def build_model():
     
-    """Builds model that will classify message categories.
+    """Builds model that will classify message categories; uses Pipeline and grid searches for the optimal model hyperparameters.
     
     Args:
         None
@@ -111,6 +114,9 @@ def evaluate_model(model, X_test, Y_test, category_names):
         X_test (array): x-variable test data
         Y_test (array): y-variable test data
         category_names (Index): column names that indicate the different types of message categories
+
+    Returns:
+        None
     """
     
     Y_pred = model.predict(X_test)
@@ -125,6 +131,9 @@ def save_model(model, model_filepath):
     Args:
         model (object): fitted model to classify message categories
         model_filepath (string): filepath that stores the model
+
+    Returns:
+        None
     """
     
     with open(model_filepath, 'wb') as file:

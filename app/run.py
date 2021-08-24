@@ -16,6 +16,16 @@ from Wordcount import WordCounter
 app = Flask(__name__)
 
 def tokenize(text):
+
+    """Splits the text into tokens, and then lemmatizes the tokens.
+    
+    Args:
+        text (string): text to split into tokens
+
+    Returns:
+        clean_tokens (list): list of tokens after lemmatization
+    """
+
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
